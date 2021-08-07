@@ -1,4 +1,4 @@
-# BeatSaber-AudioDevice
+# BeatSaber-AudioOutputDevice
 
 A Beat Saber mod that allows you to change the output audio device in-game from the mod settings menu.  Tested on Windows only.
 
