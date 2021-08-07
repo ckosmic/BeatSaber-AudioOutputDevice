@@ -9,4 +9,4 @@ A Beat Saber mod that allows you to change the output audio device in-game from 
 
 ## AudioEndpointLib
 
-Is a modified version of [AudioEndPointController](https://github.com/DanStevens/AudioEndPointController) by DanStevens made to work as a library.
+Is a modified version of [AudioEndPointController](https://github.com/DanStevens/AudioEndPointController) by DanStevens made to function as a library.
