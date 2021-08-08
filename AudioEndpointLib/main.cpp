@@ -1,3 +1,6 @@
+// Modified version of https://github.com/DanStevens/AudioEndPointController by DanStevens to work as a library (and add extra features like volume getting/setting)
+// Also I'm sorry for whoever looks at this bc everything's repeated a bunch of times for each exported function
+
 #define _CRT_SECURE_NO_WARNINGS
 
 #include <stdio.h>
@@ -29,6 +32,8 @@ extern "C" {
 
 	__declspec(dllexport) void getAudioDeviceInfo(void (add)(char* pstr));
 	__declspec(dllexport) void setAudioDevice(int index);
+	__declspec(dllexport) float getVolume();
+	__declspec(dllexport) void setVolume(float volume);
 	HRESULT printDeviceInfo(char* buffer, IMMDevice* pDevice, int index, LPCWSTR outFormat, LPWSTR strDefaultDeviceID);
 	std::wstring getDeviceProperty(IPropertyStore* pStore, const PROPERTYKEY key);
 	HRESULT SetDefaultAudioPlaybackDevice(LPCWSTR devID);
