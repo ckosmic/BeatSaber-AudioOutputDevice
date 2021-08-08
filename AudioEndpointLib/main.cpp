@@ -5,6 +5,7 @@
 #include <tchar.h>
 #include <string>
 #include <mmdeviceapi.h>
+#include <endpointvolume.h>
 #include "PolicyConfig.h"
 #include "windows.h"
 #include "Functiondiscoverykeys_devpkey.h"
@@ -112,6 +113,96 @@ extern "C" {
 							state.hr = SetDefaultAudioPlaybackDevice(strID);
 						}
 						state.pCurrentDevice->Release();
+					}
+
+					state.pDevices->Release();
+				}
+				state.pEnum->Release();
+			}
+		}
+	}
+
+	__declspec(dllexport) float getVolume() {
+		TGlobalState state;
+
+		state.strDefaultDeviceID = (LPWSTR)'\0';
+		state.pDeviceFormatStr = _T(DEVICE_OUTPUT_FORMAT);
+		state.deviceStateFilter = DEVICE_STATE_ACTIVE;
+
+		float currentVolume = 0;
+
+		state.hr = CoInitializeEx(NULL, COINIT_APARTMENTTHREADED);
+		if (SUCCEEDED(state.hr))
+		{
+			state.pEnum = NULL;
+			state.hr = CoCreateInstance(__uuidof(MMDeviceEnumerator), NULL, CLSCTX_ALL, __uuidof(IMMDeviceEnumerator),
+				(void**)&state.pEnum);
+			if (SUCCEEDED(state.hr))
+			{
+				state.hr = state.pEnum->EnumAudioEndpoints(eRender, state.deviceStateFilter, &state.pDevices);
+				if SUCCEEDED(state.hr)
+				{
+					UINT count;
+					state.pDevices->GetCount(&count);
+
+					// Get default device
+					IMMDevice* pDefaultDevice;
+					state.hr = state.pEnum->GetDefaultAudioEndpoint(eRender, eMultimedia, &pDefaultDevice);
+					if (SUCCEEDED(state.hr))
+					{
+						IAudioEndpointVolume* endpointVolume;
+						state.hr = pDefaultDevice->Activate(__uuidof(IAudioEndpointVolume), CLSCTX_INPROC_SERVER, NULL, (LPVOID*)&endpointVolume);
+						if (SUCCEEDED(state.hr)) {
+							state.hr = endpointVolume->GetMasterVolumeLevelScalar(&currentVolume);
+						}
+
+						endpointVolume->Release();
+						pDefaultDevice->Release();
+					}
+
+					state.pDevices->Release();
+				}
+				state.pEnum->Release();
+			}
+		}
+
+		return currentVolume;
+	}
+
+	__declspec(dllexport) void setVolume(float volume) {
+		TGlobalState state;
+
+		state.strDefaultDeviceID = (LPWSTR)'\0';
+		state.pDeviceFormatStr = _T(DEVICE_OUTPUT_FORMAT);
+		state.deviceStateFilter = DEVICE_STATE_ACTIVE;
+
+		state.hr = CoInitializeEx(NULL, COINIT_APARTMENTTHREADED);
+		if (SUCCEEDED(state.hr))
+		{
+			state.pEnum = NULL;
+			state.hr = CoCreateInstance(__uuidof(MMDeviceEnumerator), NULL, CLSCTX_ALL, __uuidof(IMMDeviceEnumerator),
+				(void**)&state.pEnum);
+			if (SUCCEEDED(state.hr))
+			{
+				state.hr = state.pEnum->EnumAudioEndpoints(eRender, state.deviceStateFilter, &state.pDevices);
+				if SUCCEEDED(state.hr)
+				{
+					UINT count;
+					state.pDevices->GetCount(&count);
+
+					// Get default device
+					IMMDevice* pDefaultDevice;
+					state.hr = state.pEnum->GetDefaultAudioEndpoint(eRender, eMultimedia, &pDefaultDevice);
+					if (SUCCEEDED(state.hr))
+					{
+						IAudioEndpointVolume* endpointVolume;
+						state.hr = pDefaultDevice->Activate(__uuidof(IAudioEndpointVolume), CLSCTX_INPROC_SERVER, NULL, (LPVOID*)&endpointVolume);
+						if (SUCCEEDED(state.hr)) {
+							state.hr = endpointVolume->SetMasterVolumeLevelScalar(volume, NULL);
+						}
+
+						endpointVolume->Release();
+						pDefaultDevice->Release();
 					}
 
 					state.pDevices->Release();

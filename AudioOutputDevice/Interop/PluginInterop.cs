@@ -16,6 +16,10 @@ namespace AudioOutputDevice
 		private static extern void getAudioDeviceInfo(AddAnsi add);
 		[DllImport("AudioEndpointLib")]
 		private static extern void setAudioDevice(int index);
+		[DllImport("AudioEndpointLib")]
+		private static extern float getVolume();
+		[DllImport("AudioEndpointLib")]
+		private static extern void setVolume(float volume);
 
 		public static AudioDeviceInfo[] GetAudioDeviceInfo() {
 			List<string> deviceInfoStrings = new List<string>();
@@ -24,6 +28,7 @@ namespace AudioOutputDevice
 			AudioDeviceInfo[] deviceInfos = new AudioDeviceInfo[deviceInfoStrings.Count];
 			for (int i = 0; i < deviceInfoStrings.Count; i++) {
 				deviceInfos[i] = CreateAudioDeviceInfo(deviceInfoStrings[i]);
+				Plugin.Log.Info(deviceInfos[i].Name);
 			}
 
 			return deviceInfos;
@@ -31,6 +36,13 @@ namespace AudioOutputDevice
 
 		public static void SetAudioDevice(int index) {
 			setAudioDevice(index);
+		}
+
+		public static void SetVolume(float volume) {
+			setVolume(volume);
+		}
+		public static float GetVolume() {
+			return getVolume();
 		}
 
 		// Device info strings are formatted as such:       {index} {name} {isDefault}

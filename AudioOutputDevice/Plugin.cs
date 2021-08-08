@@ -9,6 +9,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine;
 using IPALogger = IPA.Logging.Logger;
 using BeatSaberMarkupLanguage.Settings;
+using SiraUtil.Zenject;
 
 namespace AudioOutputDevice
 {
@@ -20,11 +21,11 @@ namespace AudioOutputDevice
 		internal static IPALogger Log { get; private set; }
 
 		[Init]
-		public void Init(IPALogger logger) {
+		public void Init(IPALogger logger, Zenjector zenjector) {
 			Instance = this;
 			Log = logger;
 
-			BSMLSettings.instance.AddSettingsMenu("Audio Device", $"AudioOutputDevice.UI.Views.settingsView.bsml", SettingsViewController.instance);
+			zenjector.OnMenu<AODMenuInstaller>();
 		}
 	}
 }
