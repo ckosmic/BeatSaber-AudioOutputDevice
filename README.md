@@ -4,7 +4,8 @@ A Beat Saber mod that allows you to change the output audio device in-game from 
 
 ## Installation
 
-- Install BeatSaberMarkupLanguage
+- Install BeatSaberMarkupLanguage and SiraUtil from ModAssistant or manually
+- Download and install [vc_redist.x64.exe](https://aka.ms/vs/16/release/vc_redist.x64.exe)
 - Download the latest release and extract it into your Beat Saber folder (make sure to put AudioEndpointLib.dll in Libs/Native)
 
 ## AudioEndpointLib
