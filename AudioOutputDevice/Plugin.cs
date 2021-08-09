@@ -27,5 +27,15 @@ namespace AudioOutputDevice
 
 			zenjector.OnMenu<AODMenuInstaller>();
 		}
+
+		[OnStart]
+		public void OnApplicationStart() {
+			PluginInterop.Initialize();
+		}
+
+		[OnExit]
+		public void OnApplicationQuit() {
+			PluginInterop.Uninitialize();
+		}
 	}
 }

@@ -36,7 +36,6 @@ namespace AudioOutputDevice
 		[UIAction("#post-parse")]
 		public void PostParse() {
 			_deviceList = new List<object>();
-			Plugin.Log.Info("got thid far");
 			_deviceInfos = PluginInterop.GetAudioDeviceInfo();
 			foreach (AudioDeviceInfo deviceInfo in _deviceInfos) {
 				_deviceList.Add(deviceInfo.Name);
@@ -73,7 +72,6 @@ namespace AudioOutputDevice
 		}
 
 		private void OnDropDownClicked() {
-			Plugin.Log.Info("Dropdown clicked");
 			_dropdownModal.transform.localPosition = new Vector3(-40.0f, _dropdownModal.transform.localPosition.y, 0.0f);
 		}
 
