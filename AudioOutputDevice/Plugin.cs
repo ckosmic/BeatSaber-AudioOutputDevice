@@ -19,12 +19,13 @@ namespace AudioOutputDevice
 	{
 		internal static Plugin Instance { get; private set; }
 		internal static IPALogger Log { get; private set; }
+		internal static SettingsStore Settings { get; private set; }
 
 		[Init]
-		public void Init(IPALogger logger, Zenjector zenjector) {
+		public void Init(IPALogger logger, Config config, Zenjector zenjector) {
 			Instance = this;
 			Log = logger;
-
+			Settings = config.Generated<SettingsStore>();
 			zenjector.OnMenu<AODMenuInstaller>();
 		}
 

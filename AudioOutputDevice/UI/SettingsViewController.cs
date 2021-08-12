@@ -20,12 +20,19 @@ namespace AudioOutputDevice
 	{
 		private ModalView _dropdownModal;
 		private AudioDeviceInfo[] _deviceInfos;
+		private bool _skipRemembrance = false;
 
 		[UIValue("device-list")]
 		private List<object> _deviceList = new List<object>();
 
 		[UIValue("system-volume")]
 		private int _systemVolume = (int)(PluginInterop.GetVolume() * 100.0f);
+
+		[UIValue("rember")]
+		private bool _rememberDevice { 
+			get { return Plugin.Settings.RememberDevice; }
+			set { Plugin.Settings.RememberDevice = value; }
+		}
 
 		[UIComponent("device-dropdown")]
 		private readonly DropDownListSetting _dropDownListSetting;
@@ -46,7 +53,21 @@ namespace AudioOutputDevice
 			_dropDownListSetting.GetComponentInChildren<NoTransitionsButton>(true).onClick.AddListener(OnDropDownClicked);
 
 			AudioDeviceInfo selectedDevice = _deviceInfos.ToList().Where((info) => info.IsDefault == true).First();
-			_dropDownListSetting.Value = _deviceList.Where(obj => ((string)obj) == selectedDevice.Name).FirstOrDefault();
+			string deviceNameSearch = "";
+			if (_rememberDevice) {
+				deviceNameSearch = Plugin.Settings.LastDeviceName;
+				// Yikes vv
+				if(DeviceSelected(deviceNameSearch) <= 0) {
+					deviceNameSearch = selectedDevice.Name;
+					_skipRemembrance = true;
+					DeviceSelected(deviceNameSearch);
+					_skipRemembrance = false;
+				}
+			} else {
+				deviceNameSearch = selectedDevice.Name;
+			}
+
+			_dropDownListSetting.Value = _deviceList.Where(obj => ((string)obj) == deviceNameSearch).FirstOrDefault();
 			_dropDownListSetting.ApplyValue();
 
 			_dropDownListSetting.transform.Find("DropDownButton/Text").GetComponent<CurvedTextMeshPro>().overflowMode = TMPro.TextOverflowModes.Ellipsis;
@@ -58,11 +79,19 @@ namespace AudioOutputDevice
 		}
 
 		[UIAction("device-selected")]
-		public void DeviceSelected(string itemName) {
+		public int DeviceSelected(string itemName) {
 			int index = _deviceInfos.ToList().FindIndex(deviceInfo => deviceInfo.Name == itemName);
-			PluginInterop.SetAudioDevice(index);
-			_sliderSetting.Value = (int)(PluginInterop.GetVolume() * 100.0f);
-			_sliderSetting.ApplyValue();
+			if (index >= 0) {
+				PluginInterop.SetAudioDevice(index);
+				_sliderSetting.Value = (int)(PluginInterop.GetVolume() * 100.0f);
+				_sliderSetting.ApplyValue();
+				if (!_skipRemembrance) {
+					Plugin.Settings.LastDeviceName = itemName;
+				}
+			} else {
+				Plugin.Log.Error($"Failed to find { itemName } in device list.");
+			}
+			return index;
 		}
 
 		[UIAction("volume-changed")]
