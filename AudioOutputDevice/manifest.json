@@ -3,7 +3,7 @@
   "id": "AudioOutputDevice",
   "name": "AudioOutputDevice",
   "author": "ckosmic",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Allows you to change your audio output device and volume from in-game.",
   "gameVersion": "1.16.4",
   "dependsOn": {

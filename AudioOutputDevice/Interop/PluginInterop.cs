@@ -10,7 +10,7 @@ namespace AudioOutputDevice
 	internal class PluginInterop
 	{
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		private delegate void AddAnsi([MarshalAs(UnmanagedType.LPStr)] string str);
+		private delegate void AddAnsi([MarshalAs(UnmanagedType.LPWStr)] string str);
 
 		[DllImport("AudioEndpointLib", CallingConvention = CallingConvention.Cdecl)]
 		private static extern void getAudioDeviceInfo(AddAnsi add);
@@ -32,6 +32,7 @@ namespace AudioOutputDevice
 
 			AudioDeviceInfo[] deviceInfos = new AudioDeviceInfo[deviceInfoStrings.Count];
 			for (int i = 0; i < deviceInfoStrings.Count; i++) {
+				Plugin.Log.Info(deviceInfoStrings[i]);
 				deviceInfos[i] = CreateAudioDeviceInfo(deviceInfoStrings[i]);
 			}
 
