@@ -30,13 +30,13 @@ extern "C" {
 		int deviceStateFilter;
 	} TGlobalState;
 
-	__declspec(dllexport) void getAudioDeviceInfo(void (add)(char* pstr));
+	__declspec(dllexport) void getAudioDeviceInfo(void (add)(wchar_t* pstr));
 	__declspec(dllexport) void setAudioDevice(int index);
 	__declspec(dllexport) float getVolume();
 	__declspec(dllexport) void setVolume(float volume);
 	__declspec(dllexport) void initialize();
 	__declspec(dllexport) void uninitialize();
-	HRESULT printDeviceInfo(char* buffer, IMMDevice* pDevice, int index, LPCWSTR outFormat, LPWSTR strDefaultDeviceID);
+	HRESULT printDeviceInfo(wchar_t* buffer, IMMDevice* pDevice, int index, LPCWSTR outFormat, LPWSTR strDefaultDeviceID);
 	std::wstring getDeviceProperty(IPropertyStore* pStore, const PROPERTYKEY key);
 	HRESULT SetDefaultAudioPlaybackDevice(LPCWSTR devID);
 
@@ -48,7 +48,7 @@ extern "C" {
 		CoUninitialize();
 	}
 
-	__declspec(dllexport) void getAudioDeviceInfo(void (add)(char* pstr)) {
+	__declspec(dllexport) void getAudioDeviceInfo(void (add)(wchar_t* pstr)) {
 		TGlobalState state;
 
 		state.strDefaultDeviceID = (LPWSTR)'\0';
@@ -78,7 +78,7 @@ extern "C" {
 						state.hr = state.pDevices->Item(i - 1, &state.pCurrentDevice);
 						if (SUCCEEDED(state.hr))
 						{
-							char buffer[256] = { '\0' };
+							wchar_t buffer[256] = { '\0' };
 							state.hr = printDeviceInfo(buffer, state.pCurrentDevice, i, state.pDeviceFormatStr, state.strDefaultDeviceID);
 							add(buffer);
 							state.pCurrentDevice->Release();
@@ -181,7 +181,7 @@ extern "C" {
 		}
 	}
 
-	HRESULT printDeviceInfo(char* buffer, IMMDevice* pDevice, int index, LPCWSTR outFormat, LPWSTR strDefaultDeviceID)
+	HRESULT printDeviceInfo(wchar_t* buffer, IMMDevice* pDevice, int index, LPCWSTR outFormat, LPWSTR strDefaultDeviceID)
 	{
 		// Device ID
 		LPWSTR strID = NULL;
@@ -211,7 +211,7 @@ extern "C" {
 
 			if (SUCCEEDED(hr))
 			{
-				sprintf(buffer, "%d %ws %d", index, friendlyName.c_str(), deviceDefault);
+				swprintf(buffer, 256, L"%d %s %d", index, friendlyName.c_str(), deviceDefault);
 
 				//,dwState,Desc.c_str(),interfaceFriendlyName.c_str(),strID
 			}
