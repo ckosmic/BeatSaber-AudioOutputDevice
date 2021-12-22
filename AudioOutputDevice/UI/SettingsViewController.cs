@@ -75,7 +75,7 @@ namespace AudioOutputDevice
 			_dropdownModal = _dropDownListSetting.GetComponentInChildren<ModalView>(true);
 			_dropdownModal.GetComponent<RectTransform>().sizeDelta = new Vector2(50.0f, 43.2f);
 
-			_sliderSetting.GetComponentInChildren<TimeSlider>().GetComponent<RectTransform>().sizeDelta = new Vector2(50.0f, 0.0f);
+			_sliderSetting.GetComponentInChildren<CustomFormatRangeValuesSlider>().GetComponent<RectTransform>().sizeDelta = new Vector2(50.0f, 0.0f);
 		}
 
 		[UIAction("device-selected")]

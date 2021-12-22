@@ -3,13 +3,13 @@
   "id": "AudioOutputDevice",
   "name": "AudioOutputDevice",
   "author": "ckosmic",
-  "version": "0.2.0",
+  "version": "0.2.2",
   "description": "Allows you to change your audio output device and volume from in-game.",
-  "gameVersion": "1.16.4",
+  "gameVersion": "1.19.0",
   "dependsOn": {
-    "BSIPA": "^4.2.0",
-    "BeatSaberMarkupLanguage": "^1.5.4",
-    "SiraUtil": "^2.5.7"
+    "BSIPA": "^4.2.1",
+    "BeatSaberMarkupLanguage": "^1.6.0",
+    "SiraUtil": "^3.0.0"
   },
   "links": {
     "project-source": "https://github.com/ckosmic/BeatSaber-AudioOutputDevice"

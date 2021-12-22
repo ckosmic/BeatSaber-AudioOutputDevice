@@ -26,7 +26,7 @@ namespace AudioOutputDevice
 			Instance = this;
 			Log = logger;
 			Settings = config.Generated<SettingsStore>();
-			zenjector.OnMenu<AODMenuInstaller>();
+			zenjector.Install<AODMenuInstaller>(Location.Menu);
 		}
 
 		[OnStart]

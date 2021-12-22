@@ -2,6 +2,6 @@
 	<settings-container>
 		<dropdown-list-setting id='device-dropdown' text='Audio Output Device' choices='device-list' on-change='device-selected' hover-hint='Choose an audio output device' />
 		<bool-setting text='Remember Device' value='rember' hover-hint='Saves the selected device to automatically switch to it on launch' apply-on-change='true'></bool-setting>
-		<slider-setting id='volume-slider' text='System Volume' min='0' max='100' increment='1' value='system-volume' on-change='volume-changed' hover-hint='Changes the system volume' apply-on-change='false' integer-only='true'></slider-setting>
+		<slider-setting id='volume-slider' text='System Volume' min='0' max='100' increment='1' value='system-volume' on-change='volume-changed' hover-hint='Changes the system volume' apply-on-change='false' integer-only='true' show-buttons='true'></slider-setting>
 	</settings-container>
 </bg>
