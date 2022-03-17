@@ -60,6 +60,9 @@ namespace AudioOutputDevice
 		internal static AudioDeviceInfo CreateAudioDeviceInfo(string deviceInfoString) {
 			string[] infoParts = deviceInfoString.Split(' ');
 
+			Plugin.Log.Debug(infoParts[0]);
+			Plugin.Log.Debug(infoParts[infoParts.Length - 1]);
+
 			int index = int.Parse(infoParts[0]);
 			bool isDefault = int.Parse(infoParts[infoParts.Length - 1]) == 1;
 			string[] nameParts = infoParts.Skip(1).Take(infoParts.Length - 2).ToArray();

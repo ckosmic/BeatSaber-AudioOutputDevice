@@ -109,6 +109,7 @@ namespace AudioOutputDevice
 		}
 
 		public void Dispose() {
+			if (GameplaySetup.instance == null) return;
 			GameplaySetup.instance.RemoveTab("Audio Device");
 		}
 	}
